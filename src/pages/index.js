@@ -1,15 +1,17 @@
-import { Box, Heading, Stack } from '@chakra-ui/react'
-
 import { Center } from 'components/layout'
+import Header from 'components/header'
+import SEO from 'components/seo'
+import LotteryEntrance from 'components/lottery-entrance'
 
 export default function Home() {
   return (
-    <Box width="100vw" height="100vh">
+    <>
+      <SEO />
+
       <Center mt={6}>
-        <Stack isInline justify={'space-between'} spacing={4} mb={10}>
-          <Heading as="h2">Lottery</Heading>
-        </Stack>
+        <Header />
+        <LotteryEntrance />
       </Center>
-    </Box>
+    </>
   )
 }

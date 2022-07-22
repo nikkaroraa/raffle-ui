@@ -1,12 +1,15 @@
 import PropTypes from 'prop-types'
 import { SWRConfig } from 'swr'
+import { MoralisProvider } from 'react-moralis'
 
 import { ThemeProvider } from './theme'
 
 function Providers({ children }) {
   return (
     <SWRConfig value={{ revalidateOnFocus: false }}>
-      <ThemeProvider>{children}</ThemeProvider>
+      <ThemeProvider>
+        <MoralisProvider initializeOnMount={false}>{children}</MoralisProvider>
+      </ThemeProvider>
     </SWRConfig>
   )
 }
