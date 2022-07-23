@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react'
+import { Text, Stack, Image, Heading } from '@chakra-ui/react'
 import { useWeb3Contract, useMoralis } from 'react-moralis'
 import { Moralis } from 'moralis'
 import { useEffect, useState, useCallback } from 'react'
@@ -8,7 +8,7 @@ import { useNotification } from 'web3uikit'
 import RaffleUI from './raffle-ui'
 import { abi, contractAddresses } from '../constants'
 
-function LotteryEntrance() {
+function UI() {
   const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
   const dispatch = useNotification()
   const [entranceFee, setEntranceFee] = useState('0')
@@ -98,18 +98,27 @@ function LotteryEntrance() {
     })
   }
 
-  if (!raffleAddress) {
-    return <Text>No Raffle address detected!</Text>
-  }
-
   return (
-    <RaffleUI
-      entranceFee={entranceFee}
-      numPlayers={numPlayers}
-      recentWinner={recentWinner}
-      onRaffleEnter={handleRaffleEnter}
-    />
+    <Stack width="full" align="center" spacing={10}>
+      <Stack spacing={5}>
+        <Heading as="h3" fontSize={'xl'}>
+          Try your luck!
+        </Heading>
+        <Image alt="try your luck!" src="/assets/lottery.gif" rounded="md" />
+      </Stack>
+
+      {raffleAddress ? (
+        <RaffleUI
+          entranceFee={entranceFee}
+          numPlayers={numPlayers}
+          recentWinner={recentWinner}
+          onRaffleEnter={handleRaffleEnter}
+        />
+      ) : (
+        <Text>No Raffle contract found!</Text>
+      )}
+    </Stack>
   )
 }
 
-export default LotteryEntrance
+export default UI

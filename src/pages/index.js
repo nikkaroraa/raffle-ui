@@ -10,6 +10,7 @@ export default function Home() {
 
       <Center mt={6}>
         <Header />
+
         <UI />
       </Center>
     </>
