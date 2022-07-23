@@ -1,5 +1,6 @@
 import { Text, Button, Stack } from '@chakra-ui/react'
 import { useWeb3Contract, useMoralis } from 'react-moralis'
+import { Moralis } from 'moralis'
 import { useEffect, useState, useCallback } from 'react'
 import { ethers } from 'ethers'
 import { useNotification } from 'web3uikit'
@@ -12,6 +13,7 @@ function LotteryEntrance() {
   const [entranceFee, setEntranceFee] = useState('0')
   const [numPlayers, setNumPlayers] = useState('0')
   const [recentWinner, setRecentWinner] = useState('0')
+  const [provider, setProvider] = useState()
 
   const chainId = parseInt(chainIdHex)
   const raffleAddress = chainId in contractAddresses ? contractAddresses[chainId][0] : null
@@ -61,8 +63,16 @@ function LotteryEntrance() {
   useEffect(() => {
     if (isWeb3Enabled) {
       updateUI()
+      const raffleContract = new ethers.Contract(raffleAddress, abi, provider.web3)
+      raffleContract.on('WinnerPicked', async (address) => {
+        console.log('Winner picked: ', address)
+        updateUI()
+      })
     }
-  }, [isWeb3Enabled, updateUI])
+    Moralis.onWeb3Enabled((provider) => {
+      setProvider(provider)
+    })
+  }, [isWeb3Enabled, updateUI, provider, raffleAddress])
 
   const handleNewNotification = () => {
     dispatch({
