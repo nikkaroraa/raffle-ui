@@ -5,7 +5,7 @@ function Header() {
   return (
     <Stack isInline justify="space-between" my={10}>
       <Heading as="h2" textTransform={'lowercase'}>
-        The Lottery
+        Raffle
       </Heading>
       <ConnectButton moralisAuth={false} />
     </Stack>

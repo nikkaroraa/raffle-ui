@@ -1,10 +1,11 @@
-import { Text, Button, Stack } from '@chakra-ui/react'
+import { Text } from '@chakra-ui/react'
 import { useWeb3Contract, useMoralis } from 'react-moralis'
 import { Moralis } from 'moralis'
 import { useEffect, useState, useCallback } from 'react'
 import { ethers } from 'ethers'
 import { useNotification } from 'web3uikit'
 
+import RaffleUI from './raffle-ui'
 import { abi, contractAddresses } from '../constants'
 
 function LotteryEntrance() {
@@ -63,7 +64,7 @@ function LotteryEntrance() {
   useEffect(() => {
     if (isWeb3Enabled) {
       updateUI()
-      const raffleContract = new ethers.Contract(raffleAddress, abi, provider.web3)
+      const raffleContract = new ethers.Contract(raffleAddress, abi, provider?.web3)
       raffleContract.on('WinnerPicked', async (address) => {
         console.log('Winner picked: ', address)
         updateUI()
@@ -97,21 +98,17 @@ function LotteryEntrance() {
     })
   }
 
-  return (
-    <>
-      <Text>Lottery Entrance</Text>
+  if (!raffleAddress) {
+    return <Text>No Raffle address detected!</Text>
+  }
 
-      {raffleAddress ? (
-        <Stack spacing={3} align="flex-start" mt={10}>
-          <Button onClick={handleRaffleEnter}>Enter Raffle</Button>
-          <Text>Entrance Fee: {ethers.utils.formatUnits(entranceFee, 'ether')}ETH</Text>
-          <Text>Number of Players: {numPlayers}</Text>
-          <Text>Recent Winner: {recentWinner}</Text>
-        </Stack>
-      ) : (
-        <Text>No Raffle address detected!</Text>
-      )}
-    </>
+  return (
+    <RaffleUI
+      entranceFee={entranceFee}
+      numPlayers={numPlayers}
+      recentWinner={recentWinner}
+      onRaffleEnter={handleRaffleEnter}
+    />
   )
 }
 
