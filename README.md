@@ -1,1 +1,1 @@
-## Decentralized Lottery UI
+## Decentralized Raffle UI
